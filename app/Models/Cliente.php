@@ -10,6 +10,7 @@ use App\Models\Factura;
 class Cliente extends Model
 {
     use HasFactory;
+    protected $table = 'clientes';
     protected $primaryKey = 'id';
     protected $fillable = [
         'negocio',
@@ -22,6 +23,6 @@ class Cliente extends Model
 
     public function facturas()
     {
-        return $this->hasMany(Factura::class);
+        return $this->hasMany(Factura::class, 'id_cliente');
     }
 }

@@ -14,6 +14,30 @@ class ClienteController extends Controller
         return response()->json($clientes);
     }
 
+    public function show(Request $request)
+    {
+        $nit = $request->input('nit');
+        $negocio = $request->input('negocio');
+    
+        // Inicializar la consulta con el modelo Cliente
+        $query = Cliente::query();
+    
+        // Aplicar condiciones de búsqueda según los parámetros recibidos
+        if ($nit) {
+            $query->where('nit', $nit);
+        }
+    
+        if ($negocio) {
+            $query->where('negocio', 'LIKE', '%' . $negocio . '%');
+        }
+    
+        // Ejecutar la consulta y obtener los resultados
+        $clientes = $query->select('id', 'negocio', 'nit')->get();
+    
+        return response()->json($clientes);
+    }
+    
+
     public function store(Request $request)
     {
         $cliente = Cliente::create($request->all());

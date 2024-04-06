@@ -9,11 +9,12 @@ use App\Models\Cliente;
 
 class Factura extends Model
 {
+    protected $table = 'facturas';
     protected $primaryKey = 'id';
     protected $fillable = ['id_cliente', 'codigo', 'fecha'];
 
     public function cliente()
     {
-        return $this->belongsTo(Cliente::class);
+        return $this->belongsTo(Cliente::class, 'id_cliente');
     }
 }

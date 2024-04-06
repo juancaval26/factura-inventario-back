@@ -15,12 +15,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_factura');
             $table->foreign('id_factura')->references('id')->on('facturas')->onDelete('cascade');
-            $table->unsignedBigInteger('id_produto');
-            $table->foreign('id_produto')->references('id')->on('productos')->onDelete('cascade');
+            $table->unsignedBigInteger('id_producto');
+            $table->foreign('id_producto')->references('id')->on('productos')->onDelete('cascade');
             $table->integer('cantidad');
+            $table->integer('codigo')->unique();
             $table->text('descripcion')->nullable();
             $table->decimal('valor_total', 10, 2);
-            $table->integer('devolucion')->nullable();
+            $table->tinyInteger('devolucion')->nullable()->default(0);
             $table->string('vendedor');
             $table->date('fecha');
             $table->timestamps();

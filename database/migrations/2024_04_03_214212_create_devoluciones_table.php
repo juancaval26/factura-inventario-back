@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('devoluciones', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_ventas');
-            $table->foreign('id_ventas')->references('id')->on('ventas')->onDelete('cascade');
+            $table->unsignedBigInteger('id_venta');
+            $table->foreign('id_venta')->references('id')->on('ventas')->onDelete('cascade');
             $table->date('fecha');
             $table->integer('cantidad');
             $table->timestamps();
