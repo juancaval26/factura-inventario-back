@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\venta;
+use Illuminate\Support\Facades\DB;
+
 
 
 class VentaController extends Controller
@@ -12,8 +14,19 @@ class VentaController extends Controller
         // Listar todas las venta con sus clientes
         public function index()
         {
-            $venta = Venta::with('factura')->get();
-            return response()->json($venta);
+            $ventas = DB::select("
+            SELECT 
+            ventas.id id_venta, ventas.cantidad, ventas.codigo cod_venta, ventas.descripcion, ventas.valor_total,  		ventas.devolucion, ventas.vendedor, ventas.fecha fecha_venta, facturas.id id_factura, 
+            facturas.codigo cod_factura, facturas.fecha elab_factura, clientes.id id_cliente, 
+            clientes.nombre nom_cliente, clientes.negocio, productos.id id_producto, 
+            productos.nombre nom_producto, productos.precio
+        FROM ventas
+            INNER JOIN facturas ON facturas.id = ventas.id_factura
+            INNER JOIN clientes ON clientes.id = facturas.id_cliente
+            INNER JOIN productos ON productos.id  = ventas.id_producto
+            ");
+
+            return response()->json($ventas);
         }
 
         public function show(Request $request)
@@ -31,15 +44,12 @@ class VentaController extends Controller
         {
             // Validar datos de entrada
             $request->validate([
-                'id_factura' => 'required|exists:facturas,id',
-                'id_producto' => 'required|unique:productos,id',
-                'codigo' => 'required|unique:venta,codigo',
-                'cantidad' => 'required|unique:venta,cantidad',
-                'descripcion' => 'required|unique:venta,descripcion',
-                'valor_unidad' => 'required|unique:venta,valor_unidad',
-                'valor_total' => 'required|unique:venta,valor_total',
-                'devolucion' => 'required|unique:venta,devolucion',
-                'vendedor' => 'required|unique:venta,vendedor',
+                'id_factura' => 'required',
+                'id_producto' => 'required',
+                'cantidad' => 'required',
+                'codigo' => 'required',
+                'valor_total' => 'required',
+                'vendedor' => 'required',
                 'fecha' => 'required|date'
             ]);
     
@@ -49,14 +59,13 @@ class VentaController extends Controller
             // Crear la venta asociada al cliente
             $venta = new Venta();
             $venta->id_factura = $facturaId;
-            $venta->codigo = $request->input('id_producto');
-            $venta->fecha = $request->input('cantidad');
-            $venta->fecha = $request->input('codigo');
-            $venta->fecha = $request->input('descripcion');
-            $venta->fecha = $request->input('valor_unidad');
-            $venta->fecha = $request->input('valor_total');
-            $venta->fecha = $request->input('devolucion');
-            $venta->fecha = $request->input('vendedor');
+            $venta->id_producto = $request->input('id_producto');
+            $venta->cantidad = $request->input('cantidad');
+            $venta->codigo = $request->input('codigo');
+            $venta->descripcion = $request->input('descripcion');
+            $venta->valor_total = $request->input('valor_total');
+            $venta->devolucion = $request->input('devolucion');
+            $venta->vendedor = $request->input('vendedor');
             $venta->fecha = $request->input('fecha');
 
             // Asignar otros campos de la venta desde la solicitud si es necesario
@@ -75,20 +84,6 @@ class VentaController extends Controller
             if (!$venta) {
                 return response()->json(['message' => 'venta no encontrada'], 404);
             }
-    
-            // Validar datos de entrada si es necesario
-            $request->validate([
-                'id_factura' => 'required|exists:facturas,id'.$id,
-                'id_producto' => 'required|unique:productos,id',
-                'cantidad' => 'required|unique:venta,cantidad',
-                'codigo' => 'required|unique:venta,codigo',
-                'descripcion' => 'required|unique:venta,descripcion',
-                'valor_unidad' => 'required|unique:venta,valor_unidad',
-                'valor_total' => 'required|unique:venta,valor_total',
-                'devolucion' => 'required|unique:venta,devolucion',
-                'vendedor' => 'required|unique:venta,vendedor',
-                'fecha' => 'required|date'
-            ]);
     
             // Actualizar la venta con los datos proporcionados
             $venta->update($request->all());

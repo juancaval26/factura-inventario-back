@@ -25,6 +25,16 @@ class DevolucionController extends Controller
     // Crear una nueva devolución
     public function store(Request $request)
     {
+        // Validar datos de entrada
+        // $request->validate([
+        //     'id_factura' => 'required',
+        //     'id_producto' => 'required',
+        //     'cantidad' => 'required',
+        //     'codigo' => 'required',
+        //     'valor_total' => 'required',
+        //     'vendedor' => 'required',
+        //     'fecha' => 'required|date'
+        // ]);
         $devolucion = Devolucion::create($request->all());
         return response()->json($devolucion, 201);
     }

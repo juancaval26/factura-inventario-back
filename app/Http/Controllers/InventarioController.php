@@ -40,6 +40,18 @@ class InventarioController extends Controller
 
     public function store(Request $request)
     {
+
+        // Validar datos de entrada
+        // $request->validate([
+        //     'id_factura' => 'required',
+        //     'id_producto' => 'required',
+        //     'cantidad' => 'required',
+        //     'codigo' => 'required',
+        //     'valor_total' => 'required',
+        //     'vendedor' => 'required',
+        //     'fecha' => 'required|date'
+        // ]);
+
         $inventario = Inventario::create($request->all());
         return response()->json($inventario, 201);
 

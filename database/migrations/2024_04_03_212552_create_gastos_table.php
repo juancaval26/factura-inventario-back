@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('gastos', function (Blueprint $table) {
             $table->id();
-            $table->string('articulo');
-            $table->decimal('valor', 10, 2); // El segundo parámetro indica la cantidad total de dígitos y el tercero la cantidad de dígitos decimales.
+            $table->string('articulo', 20);
+            $table->integer('valor');
             $table->date('fecha');
             $table->timestamps();
         });

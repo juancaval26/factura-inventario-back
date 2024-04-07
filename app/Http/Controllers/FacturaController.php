@@ -14,6 +14,29 @@ class FacturaController extends Controller
         return response()->json($facturas);
     }
 
+        // Mostrar una devolución específica con sus ventas, facturas y productos asociados
+    public function show(Request $request, $id)
+    {
+        try {
+
+            $codigo = $request->input('codigo');
+            // Realiza la búsqueda por el código de venta
+            $factura = Factura::where('codigo', $codigo)->select('id', 'codigo')->get();
+
+            // Verificar si se encontró el producto
+            if (!$factura) {
+                // Si el producto no se encuentra, devolver una respuesta de error
+                return response()->json(['message' => 'Producto no encontrado'], 404);
+            }
+    
+            // Devolver el producto como respuesta en formato JSON
+            return response()->json($factura);
+        } catch (\Exception $e) {
+            // Manejar cualquier excepción que ocurra durante la búsqueda
+            return response()->json(['message' => 'Error al buscar el producto'], 500);
+        }
+    }
+
     // Crear una nueva factura para un cliente dado
     public function store(Request $request)
     {

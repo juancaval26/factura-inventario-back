@@ -25,6 +25,7 @@ Route::get('/clientes/buscar', [VentaController::class, 'show']);
 Route::resource('/devolucion', DevolucionController::class);
 Route::resource('/entrada', EntradaController::class);
 Route::resource('/factura', FacturaController::class);
+Route::get('/factura/buscar', [InventarioController::class, 'show']);
 Route::resource('/gastos', GastoController::class);
 Route::resource('/inventario', InventarioController::class);
 Route::get('/inventario/buscar', [InventarioController::class, 'show']);

@@ -20,29 +20,7 @@ class ProductoController extends Controller
         return response()->json($productos);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $producto = Producto::create($request->all());
-        return response()->json($producto, 201);
-    }
-
-    /**
+        /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -69,17 +47,27 @@ class ProductoController extends Controller
             return response()->json(['message' => 'Error al buscar el producto'], 500);
         }
     }
-    
 
     /**
-     * Show the form for editing the specified resource.
+     * Store a newly created resource in storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function store(Request $request)
     {
-        //
+        // // Validar datos de entrada
+        // $request->validate([
+        //     'id_factura' => 'required',
+        //     'id_producto' => 'required',
+        //     'cantidad' => 'required',
+        //     'codigo' => 'required',
+        //     'valor_total' => 'required',
+        //     'vendedor' => 'required',
+        //     'fecha' => 'required|date'
+        // ]);
+        $producto = Producto::create($request->all());
+        return response()->json($producto, 201);
     }
 
     /**

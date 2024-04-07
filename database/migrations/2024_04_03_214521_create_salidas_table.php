@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('salidas', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo');
+            $table->string('codigo')->unique();
             $table->unsignedBigInteger('id_ventas');
             $table->foreign('id_ventas')->references('id')->on('ventas')->onDelete('cascade');
             $table->unsignedBigInteger('id_inventario');

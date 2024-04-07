@@ -8,8 +8,6 @@ use App\Models\Factura;
 use App\Models\Devolucion;
 use App\Models\Salida;
 
-
-
 class Venta extends Model
 {
     use HasFactory;
@@ -40,6 +38,6 @@ class Venta extends Model
 
     public function salidas()
     {
-        return $this->hasMany(Salida::class, 'id_venta');
+        return $this->hasMany(Salida::class, 'id_salida');
     }
 }

@@ -5,14 +5,26 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Salida;
+use Illuminate\Support\Facades\DB;
 
 
 class SalidaController extends Controller
 {
-    // Mostrar todas las salidas con su inventario y ventas asociadas
+
     public function index()
     {
-        $salidas = Salida::with('inventario', 'ventas')->get();
+        $salidas = DB::select("
+        SELECT 
+            productos.nombre nom_producto,
+            salidas.id id_salida, salidas.codigo cod_salida, salidas.fecha fecha_salida,
+            ventas.id id_venta, ventas.cantidad cant_ventas, ventas.vendedor,
+            inventario.id id_inventario, inventario.codigo cod_inventario
+        FROM salidas
+            INNER JOIN ventas ON ventas.id = salidas.id_venta
+            INNER JOIN productos ON productos.id = ventas.id_producto
+            INNER JOIN inventario ON inventario.id = salidas.id_inventario
+        ");
+    
         return response()->json($salidas);
     }
 

@@ -17,6 +17,16 @@ class GastoController extends Controller
 
     public function store(Request $request)
     {
+        // // Validar datos de entrada
+        // $request->validate([
+        //     'id_factura' => 'required',
+        //     'id_producto' => 'required',
+        //     'cantidad' => 'required',
+        //     'codigo' => 'required',
+        //     'valor_total' => 'required',
+        //     'vendedor' => 'required',
+        //     'fecha' => 'required|date'
+        // ]);
         $gasto = Gasto::create($request->all());
         return response()->json($gasto, 201);
 

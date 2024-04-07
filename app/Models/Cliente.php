@@ -13,6 +13,7 @@ class Cliente extends Model
     protected $table = 'clientes';
     protected $primaryKey = 'id';
     protected $fillable = [
+        'nombre',
         'negocio',
         'direccion',
         'telefono',
