@@ -17,8 +17,8 @@ class Producto extends Model
         'nombre',
         'descripcion',
         'peso',
+        'precio_costo',
         'fecha',
-        'precio',
     ];
 
     public function entradas()

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('telefono',20)->nullable();
             $table->string('nit', 15)->nullable();
             $table->tinyInteger('estado', 10)->nullable();
-            $table->string('correo',100)->unique();
+            $table->string('correo',100)->unique()->nullable();
             $table->date('fecha');
             $table->timestamps();
         });

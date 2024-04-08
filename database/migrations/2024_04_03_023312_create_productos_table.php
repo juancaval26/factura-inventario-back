@@ -17,9 +17,9 @@ class CreateProductosTable extends Migration
             $table->id();
             $table->string('nombre', 20);
             $table->text('descripcion')->nullable();
-            $table->integer('peso')->nullable();
-            $table->date('fecha')->nullable();
-            $table->integer('precio'); // Cambiar los parámetros según tus necesidades
+            $table->string('peso');
+            $table->integer('precio_costo'); // Cambiar los parámetros según tus necesidades
+            $table->date('fecha');
             $table->timestamps();
         });
     }

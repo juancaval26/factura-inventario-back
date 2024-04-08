@@ -16,10 +16,10 @@ class VentaController extends Controller
         {
             $ventas = DB::select("
             SELECT 
-            ventas.id id_venta, ventas.cantidad, ventas.codigo cod_venta, ventas.descripcion, ventas.valor_total,  		ventas.devolucion, ventas.vendedor, ventas.fecha fecha_venta, facturas.id id_factura, 
+            ventas.id id_venta, ventas.cantidad, ventas.precio, ventas.codigo cod_venta, ventas.descripcion, 			  ventas.devolucion, ventas.vendedor, ventas.fecha fecha_venta, facturas.id id_factura, 
             facturas.codigo cod_factura, facturas.fecha elab_factura, clientes.id id_cliente, 
             clientes.nombre nom_cliente, clientes.negocio, productos.id id_producto, 
-            productos.nombre nom_producto, productos.precio
+            productos.nombre nom_producto, (ventas.cantidad * ventas.precio) valor_total
         FROM ventas
             INNER JOIN facturas ON facturas.id = ventas.id_factura
             INNER JOIN clientes ON clientes.id = facturas.id_cliente
