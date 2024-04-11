@@ -17,7 +17,7 @@ class SalidaController extends Controller
         SELECT 
             productos.nombre nom_producto,
             salidas.id id_salida, salidas.codigo cod_salida, salidas.fecha fecha_salida,
-            ventas.id id_venta, ventas.cantidad cant_ventas, ventas.vendedor,
+            salidas.motivo, ventas.id id_venta, ventas.cantidad cant_ventas, ventas.vendedor,
             inventario.id id_inventario, inventario.codigo cod_inventario
         FROM salidas
             INNER JOIN ventas ON ventas.id = salidas.id_venta
@@ -31,7 +31,7 @@ class SalidaController extends Controller
     // Mostrar una salida específica con su inventario y ventas asociadas
     public function show($id)
     {
-        $salida = Salida::with('inventario', 'ventas')->findOrFail($id);
+        $salida = Salida::with('inventario', 'venta')->findOrFail($id);
         return response()->json($salida);
     }
 
@@ -39,9 +39,10 @@ class SalidaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_inventario' => 'required',
             'codigo' => 'required',
+            'motivo' => 'required',
             'id_venta' => 'required',
+            'id_inventario' => 'required',
             'fecha' => 'required',
         ]);
 

@@ -12,6 +12,7 @@ class Gasto extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'articulo',
+        'motivo_gasto',
         'valor',
         'fecha'
     ];

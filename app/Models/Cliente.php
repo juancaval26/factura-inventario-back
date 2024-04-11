@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Factura;
+use App\Models\Venta;
 
 
 class Cliente extends Model
@@ -22,8 +22,8 @@ class Cliente extends Model
         'correo'
     ];
 
-    public function facturas()
+    public function venta()
     {
-        return $this->hasMany(Factura::class, 'id_cliente');
+        return $this->hasMany(Venta::class, 'id_cliente');
     }
 }

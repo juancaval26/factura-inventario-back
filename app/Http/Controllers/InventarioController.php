@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Inventario;
-
+use Illuminate\Support\Facades\DB;
 
 class InventarioController extends Controller
 {
@@ -16,41 +16,60 @@ class InventarioController extends Controller
         return response()->json($inventarios);
     }
 
-    public function show(Request $request, $id)
-    {
-        try {
+public function show(Request $request)
+{
+    try {
+        $codigo = $request->input('codigo');
+        $id_producto = $request->input('id_producto');
 
-            $codigo = $request->input('codigo');
-            // Realiza la búsqueda por el código de venta
-            $inventario = Inventario::where('codigo', $codigo)->select('id', 'codigo')->get();
+        if ($codigo !== null) {
+            // Consulta por código
+            $inventario = DB::select("
+                SELECT 
+                    inventario.id, inventario.codigo, inventario.stock
+                FROM inventario 
+                WHERE inventario.codigo = ?
+            ", [$codigo]);
 
-            // Verificar si se encontró el producto
-            if (!$inventario) {
-                // Si el producto no se encuentra, devolver una respuesta de error
+            if (empty($inventario)) {
                 return response()->json(['message' => 'Producto no encontrado'], 404);
+            } else {
+                return response()->json($inventario);
             }
-    
-            // Devolver el producto como respuesta en formato JSON
-            return response()->json($inventario);
-        } catch (\Exception $e) {
-            // Manejar cualquier excepción que ocurra durante la búsqueda
-            return response()->json(['message' => 'Error al buscar el producto'], 500);
+        } elseif ($id_producto !== null) {
+            // Consulta por ID de producto
+            $inventario = DB::select("
+                SELECT 
+                    inventario.id, inventario.stock
+                FROM inventario 
+                WHERE inventario.id_producto = ?
+            ", [$id_producto]);
+
+            if (empty($inventario)) {
+                return response()->json(['message' => 'Producto no encontrado'], 404);
+            } else {
+                return response()->json($inventario);
+            }
+        } else {
+            // Si no se proporciona ni 'codigo' ni 'id_producto', devolver un error
+            return response()->json(['message' => 'Debe proporcionar el parámetro "codigo" o "id_producto"'], 400);
         }
+
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Error al buscar el producto'], 500);
     }
+}
 
     public function store(Request $request)
     {
 
         // Validar datos de entrada
-        // $request->validate([
-        //     'id_factura' => 'required',
-        //     'id_producto' => 'required',
-        //     'cantidad' => 'required',
-        //     'codigo' => 'required',
-        //     'valor_total' => 'required',
-        //     'vendedor' => 'required',
-        //     'fecha' => 'required|date'
-        // ]);
+        $request->validate([
+            'codigo' => 'required',
+            'id_producto' => 'required',
+            'stock' => 'required',
+            'fecha' => 'required|date'
+        ]);
 
         $inventario = Inventario::create($request->all());
         return response()->json($inventario, 201);

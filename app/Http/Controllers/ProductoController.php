@@ -26,7 +26,7 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show(Request $request)
     {
         try {
 
@@ -57,15 +57,12 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         // // Validar datos de entrada
-        // $request->validate([
-        //     'id_factura' => 'required',
-        //     'id_producto' => 'required',
-        //     'cantidad' => 'required',
-        //     'codigo' => 'required',
-        //     'valor_total' => 'required',
-        //     'vendedor' => 'required',
-        //     'fecha' => 'required|date'
-        // ]);
+        $request->validate([
+            'nombre' => 'required',
+            'peso' => 'required',
+            'precio_costo' => 'required',
+            'fecha' => 'required|date'
+        ]);
         $producto = Producto::create($request->all());
         return response()->json($producto, 201);
     }

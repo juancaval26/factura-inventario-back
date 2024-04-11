@@ -8,7 +8,6 @@ use App\Models\Entrada;
 use App\Models\Salida;
 use App\Models\Producto;
 
-
 class Inventario extends Model
 {
     use HasFactory;
@@ -17,7 +16,8 @@ class Inventario extends Model
     protected $fillable = [
         'codigo', 
         'id_producto', 
-        'stock'
+        'stock',
+        'fecha',
     ];
 
     public function entrada()
@@ -25,7 +25,7 @@ class Inventario extends Model
         return $this->hasMany(Entrada::class, 'id_inventario');
     }
 
-    public function salidas()
+    public function salida()
     {
         return $this->hasMany(Salida::class, 'id_inventario');
     }

@@ -19,8 +19,8 @@ class Salida extends Model
         return $this->belongsTo(Inventario::class, 'id_inventario');
     }
 
-    public function ventas()
+    public function venta()
     {
-        return $this->belongsTo(Venta::class, 'id');
+        return $this->belongsTo(Venta::class, 'id_venta');
     }
 }

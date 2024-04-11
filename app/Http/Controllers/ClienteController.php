@@ -12,36 +12,28 @@ class ClienteController extends Controller
 {
     public function index()
     {
-        // $clientes = Cliente::paginate(10);
-        $clientes = DB::table('clientes')->simplePaginate(15);
+        $clientes = DB::table('clientes')
+        ->select('id', 'nombre', 'negocio', 'direccion', 'telefono', 'nit', 'estado', 'correo')
+        ->orderBy('nombre')  // Ordenar por el campo 'nombre'
+        ->simplePaginate(15);
         return response()->json($clientes);
         
     }
 
     public function show(Request $request)
     {
-        $nit = $request->input('nit');
-        $negocio = $request->input('negocio');
         $nombre = $request->input('nombre');
     
         // Inicializar la consulta con el modelo Cliente
         $query = Cliente::query();
     
         // Aplicar condiciones de búsqueda según los parámetros recibidos
-        if ($nit) {
-            $query->where('nit', 'LIKE', '' . $nit . '%');
-        }
-    
-        if ($negocio) {
-            $query->where('negocio', 'LIKE', '' . $negocio . '%');
-        }
-
         if ($nombre) {
             $query->where('nombre', 'LIKE', '' . $nombre . '%');
         }
     
         // Ejecutar la consulta y obtener los resultados
-        $clientes = $query->select('id', 'negocio', 'nit', 'nombre')->get();
+        $clientes = $query->select('id', 'nombre', 'negocio', 'direccion', 'telefono', 'nit', 'estado', 'correo')->get();
     
         return response()->json($clientes);
     }
@@ -49,15 +41,12 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         // Validar datos de entrada
-        // $request->validate([
-        //     'id_factura' => 'required',
-        //     'id_producto' => 'required',
-        //     'cantidad' => 'required',
-        //     'codigo' => 'required',
-        //     'valor_total' => 'required',
-        //     'vendedor' => 'required',
-        //     'fecha' => 'required|date'
-        // ]);
+        $request->validate([
+            'nombre' => 'required',
+            'negocio' => 'required',
+            'direccion' => 'required',
+            'telefono' => 'required',
+        ]);
         
         $cliente = Cliente::create($request->all());
 

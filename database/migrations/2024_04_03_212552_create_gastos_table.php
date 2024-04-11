@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('articulo', 20);
             $table->integer('valor');
+            $table->string('motivo_gasto', 30);
             $table->date('fecha');
             $table->timestamps();
         });

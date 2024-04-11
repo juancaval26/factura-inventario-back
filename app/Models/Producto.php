@@ -21,12 +21,12 @@ class Producto extends Model
         'fecha',
     ];
 
-    public function entradas()
+    public function entrada()
     {
         return $this->hasMany(Entrada::class, 'id_inventario');
     }
 
-    public function inventarios()
+    public function inventario()
     {
         return $this->hasMany(Inventario::class, 'id_producto');
     }

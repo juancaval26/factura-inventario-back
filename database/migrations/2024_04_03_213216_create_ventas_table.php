@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('ventas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_factura');
-            $table->foreign('id_factura')->references('id')->on('facturas')->onDelete('cascade');
+            $table->unsignedBigInteger('id_cliente');
+            $table->foreign('id_cliente')->references('id')->on('clientes')->onDelete('cascade');
             $table->unsignedBigInteger('id_producto');
             $table->foreign('id_producto')->references('id')->on('productos')->onDelete('cascade');
             $table->integer('cantidad');

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_producto');
             $table->foreign('id_producto')->references('id')->on('productos')->onDelete('cascade');
             $table->integer('stock');
+            $table->date('fecha');
             $table->timestamps();
         });
     }
