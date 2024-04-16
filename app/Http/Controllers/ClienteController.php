@@ -29,7 +29,7 @@ class ClienteController extends Controller
     
         // Aplicar condiciones de búsqueda según los parámetros recibidos
         if ($nombre) {
-            $query->where('nombre', 'LIKE', '' . $nombre . '%');
+            $query->where('nombre', 'LIKE', '%' . $nombre . '%');
         }
     
         // Ejecutar la consulta y obtener los resultados
@@ -44,7 +44,7 @@ class ClienteController extends Controller
         $request->validate([
             'nombre' => 'required',
             'negocio' => 'required',
-            'direccion' => 'required',
+            // 'direccion' => 'required',
             'telefono' => 'required',
         ]);
         

@@ -8,13 +8,14 @@ use App\Models\Cliente;
 use App\Models\Producto;
 use App\Models\Devolucion;
 use App\Models\Salida;
+use App\Models\Factura;
 
 class Venta extends Model
 {
     use HasFactory;
     protected $table = 'ventas';
     protected $primaryKey = 'id';
-    protected $fillable = ['id_cliente', 'id_producto', 'cantidad', 'codigo', 'descripcion',
+    protected $fillable = ['id_producto','id_cliente', 'cantidad', 'codigo', 'descripcion',
     'precio', 'vendedor','fecha'];
 
     public function cliente()
@@ -35,5 +36,10 @@ class Venta extends Model
     public function salida()
     {
         return $this->hasMany(Salida::class, 'id_salida');
+    }
+
+    public function factura()
+    {
+        return $this->hasMany(Factura::class, 'id_venta');
     }
 }

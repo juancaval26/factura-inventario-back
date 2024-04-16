@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Producto;
-
+use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
@@ -32,7 +32,10 @@ class ProductoController extends Controller
 
             $nombre = $request->input('nombre');
             // Realiza la búsqueda por el código de venta
-            $producto = Producto::where('nombre', $nombre)->select('id', 'nombre')->get();
+            
+            $producto = Producto::where('nombre', 'like', '%' . $nombre . '%')
+            ->select('id', 'nombre')
+            ->get();
 
             // Verificar si se encontró el producto
             if (!$producto) {

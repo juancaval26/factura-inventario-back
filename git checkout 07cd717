@@ -1,0 +1,29 @@
+[33mcommit 852c9c4aeef1724acd736d542e8021123315145e[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: juancaval26 <juancamilovalderrama@gmail.com>
+Date:   Thu Apr 11 17:35:05 2024 -0500
+
+    actualizacion del comportamiento de controladores
+
+[33mcommit 9e1bab2102c19422c6417397878116a7e6749df0[m
+Author: juancaval26 <juancamilovalderrama@gmail.com>
+Date:   Sun Apr 7 22:10:20 2024 -0500
+
+    actualizacion consultas en el controlador ventas, y actualizacion del modelo productos
+
+[33mcommit 3c69b8ecba742061eb4d534a5b33ae31a042903c[m
+Author: juancaval26 <juancamilovalderrama@gmail.com>
+Date:   Sat Apr 6 23:39:18 2024 -0500
+
+    actualizacion controladores, modelos,apis y  migraciones
+
+[33mcommit 773793d80456da2de4f7e65d592cc0392286c203[m
+Author: juancaval26 <juancamilovalderrama@gmail.com>
+Date:   Fri Apr 5 23:02:43 2024 -0500
+
+    se agrega la logica faltante a los controladores y se prueban las apis para usar en el front
+
+[33mcommit 3e45bb80e6acb88895fe1ae8341d8a7d1f460654[m
+Author: juancaval26 <juancamilovalderrama@gmail.com>
+Date:   Thu Apr 4 22:03:07 2024 -0500
+
+    factura-backend laravel 8

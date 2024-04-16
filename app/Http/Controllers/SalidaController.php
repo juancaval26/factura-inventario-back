@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Salida;
 use Illuminate\Support\Facades\DB;
 
-
 class SalidaController extends Controller
 {
 
@@ -39,7 +38,7 @@ class SalidaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'codigo' => 'required',
+            // 'codigo' => 'required',
             'motivo' => 'required',
             'id_venta' => 'required',
             'id_inventario' => 'required',

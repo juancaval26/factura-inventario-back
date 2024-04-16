@@ -26,6 +26,14 @@ class VentaController extends Controller
             return response()->json($ventas);
         }
 
+        public function UltimoIdVentas()
+        {
+            $id = DB::select("
+                SELECT MAX(id) id FROM ventas
+            ");
+            return response()->json($id);
+        }
+
         public function show(Request $request)
         {
             $codigo = $request->input('codigo');
@@ -105,39 +113,48 @@ class VentaController extends Controller
             return response()->json($pagoFecha);
         }
     
-        // Crear una nueva venta para un cliente dado
         public function store(Request $request)
-        {
-            // Validar datos de entrada
-            $request->validate([
-                'id_cliente' => 'required',
-                'id_producto' => 'required',
-                'cantidad' => 'required',
-                'codigo' => 'required',
-                'precio' => 'required',
-                'vendedor' => 'required',
-                'fecha' => 'required|date'
-            ]);
-    
-            // Obtener el ID del cliente desde la solicitud
-            $clienteId = $request->input('id_cliente');
-    
-            // Crear la venta asociada al cliente
-            $venta = new Venta();
-            $venta->id_cliente = $clienteId;
-            $venta->id_producto = $request->input('id_producto');
-            $venta->cantidad = $request->input('cantidad');
-            $venta->codigo = $request->input('codigo');
-            $venta->descripcion = $request->input('descripcion');
-            $venta->precio = $request->input('precio');
-            $venta->vendedor = $request->input('vendedor');
-            $venta->fecha = $request->input('fecha');
+{
+    try {
+        // Validar datos de entrada para cada venta en el arreglo
+        $request->validate([
+            '*.id_cliente' => 'required|exists:clientes,id',
+            '*.id_producto' => 'required|exists:productos,id',
+            '*.cantidad' => 'required',
+            '*.precio' => 'required',
+            '*.vendedor' => 'required',
+            '*.fecha' => 'required|date'
+        ]);
 
-            // Asignar otros campos de la venta desde la solicitud si es necesario
+        $ventasData = $request->all();
+        $ventasGuardadas = [];
+
+        foreach ($ventasData as $ventaData) {
+            $venta = new Venta();
+            $venta->id_cliente = $ventaData['id_cliente'];
+            $venta->id_producto = $ventaData['id_producto'];
+            $venta->cantidad = $ventaData['cantidad'];
+            $venta->codigo = $ventaData['codigo'];
+            $venta->descripcion = $ventaData['descripcion'] ?? null;
+            $venta->precio = $ventaData['precio'];
+            $venta->vendedor = $ventaData['vendedor'];
+            $venta->fecha = $ventaData['fecha'];
+
+            // Puedes agregar otros campos de la venta aquí si es necesario
+
+            // Guardar la venta
             $venta->save();
-    
-            return response()->json($venta, 201);
+
+            // Agregar la venta guardada al arreglo de ventas guardadas
+            $ventasGuardadas[] = $venta;
         }
+
+        return response()->json($ventasGuardadas, 201);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
     
         // Actualizar los detalles de una venta existente
         public function update(Request $request, $id)
