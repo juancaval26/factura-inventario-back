@@ -17,10 +17,7 @@ class CreateFacturasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_venta');
             $table->foreign('id_venta')->references('id')->on('ventas')->onDelete('cascade');
-            $table->unsignedBigInteger('id_cliente');
-            $table->foreign('id_cliente')->references('id')->on('clientes')->onDelete('cascade');
             $table->string('codigo')->unique();
-            $table->timestamps();
         });
     }
 

@@ -21,6 +21,8 @@ class Cliente extends Model
         'estado',
         'correo'
     ];
+        // Desactivar las marcas de tiempo
+        public $timestamps = false;
 
     public function venta()
     {

@@ -20,7 +20,9 @@ class Producto extends Model
         'precio_costo',
         'fecha',
     ];
-
+    // Desactivar las marcas de tiempo
+    public $timestamps = false;
+    
     public function entrada()
     {
         return $this->hasMany(Entrada::class, 'id_inventario');

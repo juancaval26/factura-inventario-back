@@ -23,6 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+    // Desactivar las marcas de tiempo
+    public $timestamps = false;
 
     /**
      * The attributes that should be hidden for serialization.

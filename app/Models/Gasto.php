@@ -16,4 +16,6 @@ class Gasto extends Model
         'valor',
         'fecha'
     ];
+    // Desactivar las marcas de tiempo
+    public $timestamps = false;
 }

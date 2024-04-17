@@ -19,6 +19,8 @@ class Inventario extends Model
         'stock',
         'fecha',
     ];
+    // Desactivar las marcas de tiempo
+    public $timestamps = false;
 
     public function entrada()
     {

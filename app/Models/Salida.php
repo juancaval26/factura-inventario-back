@@ -13,7 +13,9 @@ class Salida extends Model
     protected $table = 'salidas';
     protected $primaryKey = 'id';
     protected $fillable = ['id_inventario', 'codigo', 'motivo', 'id_venta', 'fecha'];
-
+    // Desactivar las marcas de tiempo
+    public $timestamps = false;
+    
     public function inventario()
     {
         return $this->belongsTo(Inventario::class, 'id_inventario');

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreign('id_venta')->references('id')->on('ventas')->onDelete('cascade');
             $table->date('fecha');
             $table->integer('cantidad');
-            $table->timestamps();
         });
     }
 

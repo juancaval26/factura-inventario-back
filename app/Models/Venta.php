@@ -17,7 +17,9 @@ class Venta extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id_producto','id_cliente', 'cantidad', 'codigo', 'descripcion',
     'precio', 'vendedor','fecha'];
-
+    // Desactivar las marcas de tiempo
+    public $timestamps = false;
+    
     public function cliente()
     {
         return $this->hasMany(Cliente::class, 'id_cliente');

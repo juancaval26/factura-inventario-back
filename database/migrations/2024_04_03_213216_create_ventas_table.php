@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_producto');
             $table->foreign('id_producto')->references('id')->on('productos')->onDelete('cascade');
+            $table->unsignedBigInteger('id_cliente');
+            $table->foreign('id_cliente')->references('id')->on('clientes')->onDelete('cascade');
             $table->integer('cantidad');
-            $table->string('codigo')->unique();
+            $table->string('codigo');
             $table->text('descripcion')->nullable();
             $table->integer('precio');
             $table->string('vendedor', 50);
             $table->date('fecha');
-            $table->timestamps();
         });
     }
 

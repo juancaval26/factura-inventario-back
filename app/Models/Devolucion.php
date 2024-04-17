@@ -13,7 +13,9 @@ class Devolucion extends Model
     protected $table = 'devoluciones';
     protected $primaryKey = 'id';
     protected $fillable = ['id_venta', 'cantidad', 'fecha'];
-
+    // Desactivar las marcas de tiempo
+    public $timestamps = false;
+    
     public function venta()
     {
         return $this->belongsTo(Venta::class, 'id_venta');

@@ -11,8 +11,11 @@ class Factura extends Model
 {
     use HasFactory;
     protected $primaryKey = 'id';
-    protected $fillable = [ 'id_venta','id_cliente', 'codigo', 'fecha'];
+    protected $fillable = [ 'id_venta', 'codigo', 'fecha'];
 
+    // Desactivar las marcas de tiempo
+    public $timestamps = false;
+    
     public function cliente()
     {
         return $this->belongsTo(Cliente::class, 'id_cliente');
