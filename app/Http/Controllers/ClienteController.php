@@ -35,7 +35,11 @@ class ClienteController extends Controller
         // Ejecutar la consulta y obtener los resultados
         $clientes = $query->select('id', 'nombre', 'negocio', 'direccion', 'telefono', 'nit', 'estado', 'correo')->get();
     
-        return response()->json($clientes);
+        if ($clientes) {
+            return response()->json($clientes);
+        } else {
+            return response()->json(['message' => 'No se encontraron facturas'], 404);
+        }
     }
     
     public function store(Request $request)

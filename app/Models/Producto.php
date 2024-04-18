@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Entrada;
 use App\Models\Inventario;
-
+use App\Models\Venta;
 
 class Producto extends Model
 {
@@ -31,5 +31,10 @@ class Producto extends Model
     public function inventario()
     {
         return $this->hasMany(Inventario::class, 'id_producto');
+    }
+
+    public function venta()
+    {
+        return $this->belongsTo(Inventario::class, 'id_producto');
     }
 }

@@ -59,9 +59,6 @@ Route::get('/ventas/ultimoId', [VentaController::class, 'UltimoIdVentas'])->name
 Route::resource('/facturas', FacturaController::class)->only([
     'index', 'store', 'update', 'destroy'
 ]);
-Route::get('/facturas/detalles', [ProductoController::class, 'show'])->name('facturas.detalles');
+Route::get('/facturas/detalles', [FacturaController::class, 'show']);
 
 Auth::routes();
-
-Route::post('/register', [RegisterController::class, 'customRegister'])->name('register');
-Route::post('/login', [LoginController::class, 'customLogin'])->name('customLogin');

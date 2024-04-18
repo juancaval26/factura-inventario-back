@@ -12,7 +12,7 @@ class Salida extends Model
     use HasFactory;
     protected $table = 'salidas';
     protected $primaryKey = 'id';
-    protected $fillable = ['id_inventario', 'codigo', 'motivo', 'id_venta', 'fecha'];
+    protected $fillable = ['id_inventario', 'id_venta', 'codigo', 'motivo',  'fecha'];
     // Desactivar las marcas de tiempo
     public $timestamps = false;
     

@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('salidas', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo');
-            $table->unsignedBigInteger('id_ventas');
-            $table->foreign('id_ventas')->references('id')->on('ventas')->onDelete('cascade');
+            $table->unsignedBigInteger('id_venta');
+            $table->foreign('id_venta')->references('id')->on('ventas')->onDelete('cascade');
             $table->unsignedBigInteger('id_inventario');
             $table->foreign('id_inventario')->references('id')->on('inventario')->onDelete('cascade');
+            $table->string('motivo');
+            $table->string('codigo');
             $table->date('fecha');
         });
     }

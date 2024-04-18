@@ -4,61 +4,93 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Factura;
-use App\Models\Cliente;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Factura;
 
 class FacturaController extends Controller
 {
+
     public function index()
     {
-        $facturas = DB::select("
-        SELECT 
-            codigo,vendedor,fecha,nom_cliente,negocio,direccion,telefono,correo
-    FROM (
-        SELECT 
-            facturas.codigo,ventas.vendedor,ventas.fecha,clientes.nombre nom_cliente,
-            clientes.negocio,clientes.direccion,clientes.telefono,clientes.correo,
-            ROW_NUMBER() OVER (PARTITION BY facturas.codigo ORDER BY clientes.nombre) row_num
-        FROM facturas 
-            INNER JOIN ventas ON ventas.id = facturas.id_venta
-            INNER JOIN productos ON productos.id = ventas.id_producto
-            INNER JOIN clientes ON clientes.id = facturas.id_cliente
-    ) AS subquery
-    WHERE row_num = 1");
-
+        //no quitar los as cuando se use este tipo de consulta, dara error
+        $facturas = DB::table(function ($query) {
+            $query->select(
+                'facturas.id',
+                'facturas.codigo',
+                'ventas.vendedor',
+                'ventas.fecha',
+                'clientes.nombre as nom_cliente',
+                'clientes.negocio',
+                'clientes.direccion',
+                'clientes.telefono',
+                'clientes.correo',
+                DB::raw('ROW_NUMBER() OVER (PARTITION BY facturas.codigo ORDER BY clientes.nombre) AS row_num')
+            )
+            ->from('facturas')
+            ->join('ventas', 'ventas.id', '=', 'facturas.id_venta')
+            ->join('clientes', 'clientes.id', '=', 'ventas.id_cliente');
+        }, 'subquery')
+        ->where('row_num', '=', 1)
+        ->orderBy('nom_cliente')
+        ->simplePaginate(15);
+    
         return response()->json($facturas);
     }
+    
 
     public function show(Request $request)
     {
-
+        try {
+            $codigo = '%'.$request->input('codigo').'%';
+            $facturas = DB::select("
+            SELECT 
+                facturas.id id_fac, facturas.codigo, ventas.id id_ven, ventas.cantidad, ventas.precio,
+                ventas.vendedor, ventas.fecha, clientes.id id_cli, clientes.nombre nom_cliente,
+                clientes.negocio, clientes.direccion, clientes.telefono, productos.nombre nom_producto
+            FROM facturas 
+                INNER JOIN ventas ON ventas.id = facturas.id_venta
+                INNER JOIN productos ON productos.id = ventas.id_producto
+                INNER JOIN clientes ON clientes.id = ventas.id_cliente
+            WHERE facturas.codigo like ?",[$codigo]);
+            if ($facturas) {
+                return response()->json($facturas);
+            } else {
+                return response()->json(['message' => 'No se encontraron facturas'], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error al procesar la solicitud: ' . $e->getMessage()], 500);
+        }
     }
+    
 
         // Crear una nueva factura para un cliente dado
         public function store(Request $request)
         {
+        try {
+
             // Validar datos de entrada
             $request->validate([
-                'id_cliente' => 'required|exists:clientes,id',
-                'id_venta' => 'required|exists:ventas,id',
-                'codigo' => 'required',
+                '*.id_venta' => 'required|exists:ventas,id',
+                '*.codigo' => 'required',
             ]);
-    
-            // Obtener el ID del cliente desde la solicitud
-            $clienteId = $request->input('id_cliente');
-            $ventaId = $request->input('id_venta');
-    
-            // Crear la factura asociada al cliente
-            $factura = new Factura();
-            $factura->id_cliente = $clienteId;
-            $factura->id_venta = $ventaId;
-            $factura->codigo = $request->input('codigo');
-            // Asignar otros campos de la factura desde la solicitud si es necesario
-            $factura->save();
-    
+
+            $facturasData = $request->all();
+            $facturasGuardadas = [];
+
+            foreach ($facturasData as $facturaData) {
+                $factura = new Factura();
+                $factura->id_venta = $facturaData['id_venta'];
+                $factura->codigo = $facturaData['codigo'];                
+                
+                // Guardar la factura
+                $factura->save();
+                // Agregar la factura guardada al arreglo de facturas guardadas
+                $facturasGuardadas[] = $factura;
+            }   
             return response()->json($factura, 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
         }
 
            // Actualizar los detalles de una factura existente

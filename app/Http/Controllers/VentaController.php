@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Venta;
 use Illuminate\Support\Facades\DB;
+use App\Models\Venta;
 
 class VentaController extends Controller
 {

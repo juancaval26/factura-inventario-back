@@ -19,15 +19,15 @@ class Venta extends Model
     'precio', 'vendedor','fecha'];
     // Desactivar las marcas de tiempo
     public $timestamps = false;
-    
+
     public function cliente()
     {
-        return $this->hasMany(Cliente::class, 'id_cliente');
+        return $this->belongsTo(Cliente::class, 'id_cliente');
     }
 
     public function producto()
     {
-        return $this->belongsTo(Producto::class, 'id_producto');
+        return $this->hasMany(Producto::class, 'id_producto');
     }
 
     public function devolucion()

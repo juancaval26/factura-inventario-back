@@ -37,22 +37,42 @@ class SalidaController extends Controller
     // Crear una nueva salida
     public function store(Request $request)
     {
+    try {
+
         $request->validate([
-            // 'codigo' => 'required',
-            'motivo' => 'required',
-            'id_venta' => 'required',
-            'id_inventario' => 'required',
-            'fecha' => 'required',
+            '*.id_venta' => 'required|exists:ventas,id',
+            '*.id_inventario' => 'required|exists:inventario,id',
+            '*.codigo' => 'required',
+            '*.motivo' => 'required',
+            '*.fecha' => 'required|date',
         ]);
+                
+        $salidasData = $request->all();
+        $salidasGuardadas = [];
+        
+        foreach ($salidasData as $salidaData) {
+            $salida = new Salida();
+            $salida->id_inventario = $salidaData['id_inventario'];
+            $salida->id_venta = $salidaData['id_venta'];
+            $salida->codigo = $salidaData['codigo'];
+            $salida->motivo = $salidaData['motivo'];
+            $salida->fecha = $salidaData['fecha'];                
+            
+            // Guardar la salida
+            $salida->save();
+            // Agregar la salida guardada al arreglo de salidas guardadas
+            $salidasGuardadas[] = $salida;
+        }
 
-        $salida = Salida::create($request->all());
-        return response()->json($salida, 201);
+        return response()->json($salidasGuardadas, 201);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
     }
-
+}
     // Actualizar una salida existente
     public function update(Request $request, $id)
     {
-        $salida = Salida::findOrFail($id);
+        $salida = Salida::find($id);
         $salida->update($request->all());
         return response()->json($salida, 200);
     }
