@@ -39,7 +39,7 @@ class DevolucionController extends Controller
     {
         // Validar datos de entrada
         $request->validate([
-            'id_venta' => 'required',
+            'id_venta' => 'required|exists:ventas,id',
             'fecha' => 'required|date',
             'cantidad' => 'required'
         ]);

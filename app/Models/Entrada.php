@@ -13,7 +13,7 @@ class Entrada extends Model
     use HasFactory;
     protected $table = 'entradas';
     protected $primaryKey = 'id';
-    protected $fillable = ['id_inventario', 'codigo', 'id_producto', 'cantidad', 'fecha'];
+    protected $fillable = ['id_inventario', 'id_producto', 'cantidad', 'codigo', 'fecha'];
 
     // Desactivar las marcas de tiempo
     public $timestamps = false;

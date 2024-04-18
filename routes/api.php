@@ -28,7 +28,9 @@ Route::resource('/devolucion', DevolucionController::class)->only([
 ]);
 Route::get('/devolucion/buscar', [DevolucionController::class, 'show'])->name('devolucion.buscar');
 
-Route::resource('/entrada', EntradaController::class);
+Route::resource('/entrada', EntradaController::class)->only([
+    'index', 'store', 'update', 'destroy'
+]);
 
 Route::resource('/gastos', GastoController::class)->only([
     'index', 'store', 'update', 'destroy'
