@@ -33,12 +33,22 @@ class RegisterController extends Controller
 
     public function customRegister(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+    
         $user = $this->create($request->all());
-
+    
         if ($user) {
-            return response()->json(['message' => 'usuario creado'], 201);
+            return response()->json(['message' => 'Usuario creado'], 201);
         } else {
-            return redirect()->back()->withInput()->withErrors(['registration_error' => 'Failed to register user. Please try again.']);
+            return response()->json(['message' => 'Error al crear el usuario. Por favor, inténtalo de nuevo.'], 500);
         }
     }
 }

@@ -42,13 +42,21 @@ class EntradaController extends Controller
         ]);
 
         $entrada = Entrada::create($request->all());
-        return response()->json($entrada, 201);
+        if (!$entrada) {
+            return response()->json(['message' => 'devolucion no encontrada'], 404);
+        }else{
+            return response()->json($entrada, 201);
+        }
     }
 
     // Actualizar una entrada existente
     public function update(Request $request, $id)
     {
         $entrada = Entrada::find($id);
+                // Verificar si la factura existe
+                if (!$entrada) {
+                    return response()->json(['message' => 'Entrada no encontrada'], 404);
+                }
         $entrada->update($request->all());
         return response()->json($entrada, 200);
     }

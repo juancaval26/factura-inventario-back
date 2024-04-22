@@ -73,6 +73,10 @@ class SalidaController extends Controller
     public function update(Request $request, $id)
     {
         $salida = Salida::find($id);
+        if (!$salida) {
+            return response()->json(['message' => 'Salida no encontrada'], 404);
+        } 
+        
         $salida->update($request->all());
         return response()->json($salida, 200);
     }

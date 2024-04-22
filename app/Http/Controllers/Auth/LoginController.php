@@ -16,19 +16,21 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            // Autenticación exitosa
-            // return redirect()->intended('/dashboard');
-            return response()->json(['message' => 'usuario logueado'], 201);
+            // $user = Auth::user();
+            // $userId = $user->id;
+            // $userName = $user->name;
+            return response()->json(['success' => 'Usuario logueado'], 200);
         }
 
         // Autenticación fallida
-        return back()->withErrors(['email' => 'Email o contraseña incorrectos.']);
+        return response()->json(['error' => 'Email o contraseña incorrectos'], 401);
+
     }
 
     protected function authenticated(Request $request, $user)
-{
-    return new JsonResponse(['message' => 'Usuario logueado correctamente'], 201);
-}
+    {
+        return new JsonResponse(['success' => 'Usuario logueado correctamente'], 201);
+    }
 
     use AuthenticatesUsers;
 
@@ -37,7 +39,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -47,5 +49,12 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        // Devuelve una respuesta JSON indicando que el usuario ha cerrado sesión correctamente
+        return new JsonResponse(['message' => 'Usuario desconectado correctamente'], 200);
     }
 }

@@ -23,7 +23,9 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                // return redirect(RouteServiceProvider::HOME);
+                //cuando ya existe la sesion y vuelvo a loguarme
+            return response()->json(['success' => 'Usuario ya autenticado']); 
             }
         }
 

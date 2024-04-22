@@ -40,8 +40,11 @@ class VentaController extends Controller
     
             // Realiza la búsqueda por el código de venta
             $ventas = Venta::where('codigo', $codigo)->select('id', 'codigo')->get();
-    
-            return response()->json($ventas);
+            if ($ventas) {
+                return response()->json($ventas);
+            }else {
+                return response()->json(['message' => 'No se encontraron facturas'], 404);
+            }
         }
 
         public function totalVenta(Request $request)
@@ -154,8 +157,6 @@ class VentaController extends Controller
         return response()->json(['error' => $e->getMessage()], 500);
     }
 }
-
-    
         // Actualizar los detalles de una venta existente
         public function update(Request $request, $id)
         {
@@ -166,10 +167,8 @@ class VentaController extends Controller
             if (!$venta) {
                 return response()->json(['message' => 'venta no encontrada'], 404);
             }
-    
             // Actualizar la venta con los datos proporcionados
             $venta->update($request->all());
-    
             return response()->json($venta, 200);
         }
 }

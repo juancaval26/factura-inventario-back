@@ -72,7 +72,11 @@ class InventarioController extends Controller
         ]);
 
         $inventario = Inventario::create($request->all());
-        return response()->json($inventario, 201);
+        if ($inventario) {
+            return response()->json($inventario, 201);
+        } else {
+            return response()->json(['message' => 'Inventario no encontrado'], 404);
+        }
 
     }
 
@@ -85,7 +89,6 @@ class InventarioController extends Controller
         }
     
         $inventario->update($request->all());
-    
         return response()->json($inventario, 200);
 
     }

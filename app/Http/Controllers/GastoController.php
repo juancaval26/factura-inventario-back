@@ -32,8 +32,11 @@ class GastoController extends Controller
 
         // Ejecutar la consulta y obtener los resultados
         $gasto = $query->select('id', 'articulo', 'motivo_gasto', 'valor', 'fecha')->get();
-    
-        return response()->json($gasto);
+        if ($gasto) {
+            return response()->json($gasto);
+        } else {
+            return response()->json(['message' => 'No se encontraron gasto'], 404);
+        }
     }
 
     public function GastoFecha(Request $request)
@@ -81,7 +84,6 @@ class GastoController extends Controller
         }
     
         $gasto->update($request->all());
-    
         return response()->json($gasto, 200);
 
     }

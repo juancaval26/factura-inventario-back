@@ -67,7 +67,11 @@ class ProductoController extends Controller
             'fecha' => 'required|date'
         ]);
         $producto = Producto::create($request->all());
-        return response()->json($producto, 201);
+        if ($producto) {
+            return response()->json($producto, 201);
+        } else {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
     }
 
     /**
@@ -82,7 +86,7 @@ class ProductoController extends Controller
         $producto = Producto::find($id);
     
         if (!$producto) {
-            return response()->json(['message' => 'Gasto no encontrado'], 404);
+            return response()->json(['message' => 'Producto no encontrado'], 404);
         }
     
         $producto->update($request->all());

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Venta;
-
+use App\Models\Remision;
 
 class Cliente extends Model
 {
@@ -27,5 +27,10 @@ class Cliente extends Model
     public function venta()
     {
         return $this->hasMany(Venta::class, 'id_cliente');
+    }
+
+    public function remision()
+    {
+        return $this->hasMany(Remision::class, 'id_cliente');
     }
 }

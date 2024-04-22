@@ -11,13 +11,17 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\SalidaController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\FacturaController;
+use App\Http\Controllers\RemisionController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Rutas de autenticación  (en api.php)
+Route::middleware('cors')->post('/login', [LoginController::class, 'customLogin'])->name('login');
+// Route::middleware('auth:')->post('api/logout', [LoginController::class, 'logout'])->name('logout');
 
+// Route::middleware(['auth'])->group(function () {
+    // Rutas protegidas que requieren autenticación
+    // Esta ruta solo será accesible si el usuario está autenticado
 Route::resource('/clientes', ClienteController::class)->only([
     'index', 'store', 'update', 'destroy'
 ]);
@@ -61,6 +65,14 @@ Route::get('/ventas/ultimoId', [VentaController::class, 'UltimoIdVentas'])->name
 Route::resource('/facturas', FacturaController::class)->only([
     'index', 'store', 'update', 'destroy'
 ]);
-Route::get('/facturas/detalles', [FacturaController::class, 'show']);
+Route::get('/facturas/buscar', [FacturaController::class, 'show'])->name('facturas.buscar');
+Route::get('/facturas/detalles', [FacturaController::class, 'detallesFactura'])->name('facturas.detalles');
+
+Route::resource('/remisiones', RemisionController::class)->only([
+    'index', 'store', 'update', 'destroy'
+]);
+Route::get('/remisiones/buscar', [RemisionController::class, 'show'])->name('remisiones.buscar');
+
+// });
 
 Auth::routes();

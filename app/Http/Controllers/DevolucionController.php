@@ -43,8 +43,13 @@ class DevolucionController extends Controller
             'fecha' => 'required|date',
             'cantidad' => 'required'
         ]);
+        
         $devolucion = Devolucion::create($request->all());
-        return response()->json($devolucion, 201);
+        if (!$devolucion) {
+            return response()->json(['message' => 'devolucion no encontrada'], 404);
+        }else {
+            return response()->json($devolucion, 201);
+        }
     }
 
     // Actualizar una devolución existente
