@@ -16,10 +16,10 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 
 // Rutas de autenticación  (en api.php)
-Route::middleware('cors')->post('/login', [LoginController::class, 'customLogin'])->name('login');
-// Route::middleware('auth:')->post('api/logout', [LoginController::class, 'logout'])->name('logout');
+Route::middleware('cors')->post('api/login', [LoginController::class, 'customLogin'])->name('login');
+Route::middleware('auth:')->post('api/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     // Rutas protegidas que requieren autenticación
     // Esta ruta solo será accesible si el usuario está autenticado
 Route::resource('/clientes', ClienteController::class)->only([
@@ -73,6 +73,6 @@ Route::resource('/remisiones', RemisionController::class)->only([
 ]);
 Route::get('/remisiones/buscar', [RemisionController::class, 'show'])->name('remisiones.buscar');
 
-// });
+});
 
 Auth::routes();

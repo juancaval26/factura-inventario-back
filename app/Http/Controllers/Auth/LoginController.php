@@ -16,9 +16,6 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            // $user = Auth::user();
-            // $userId = $user->id;
-            // $userName = $user->name;
             return response()->json(['success' => 'Usuario logueado'], 200);
         }
 
@@ -55,6 +52,6 @@ class LoginController extends Controller
         Auth::logout();
 
         // Devuelve una respuesta JSON indicando que el usuario ha cerrado sesión correctamente
-        return new JsonResponse(['message' => 'Usuario desconectado correctamente'], 200);
+        return new JsonResponse(['success' => 'Usuario desconectado correctamente'], 200);
     }
 }
